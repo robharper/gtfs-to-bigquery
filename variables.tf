@@ -1,8 +1,12 @@
+variable "project_id" {
+    type = string
+}
+
 variable "source_bucket" {
     type = string
 }
 
-variable "project_id" {
+variable "error_bucket" {
     type = string
 }
 

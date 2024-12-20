@@ -129,7 +129,7 @@ resource "google_pubsub_topic" "dead_letter" {
 
 # Storage Bucket for hosting the source code
 resource "google_storage_bucket" "dead_letter" {
-  name                        = "gtfs_dead_letter"
+  name                        = var.error_bucket
   location                    = "US"
   uniform_bucket_level_access = true
 }
