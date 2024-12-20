@@ -69,12 +69,24 @@ resource "google_project_iam_member" "pubsub_trigger" {
 # ------------------------------------------------------------
 # PubSub 
 
+# == Trigger ==
 # for triggering the function
 resource "google_pubsub_topic" "gtfs_reader_trigger" {
   name = "gtfs-reader-trigger"
 }
 
+resource "google_cloud_scheduler_job" "job" {
+  name        = "gtfs-trigger"
+  description = "Triggers a GTFS data scrape to BQ every minute"
+  schedule    = "* * * * *"
 
+  pubsub_target {
+    topic_name = google_pubsub_topic.gtfs_reader_trigger.id
+    data       = base64encode("ignored")
+  }
+}
+
+# == Data ==
 resource "google_pubsub_schema" "vehicle_location" {
   name = "vehicle_location_schema"
   type = "AVRO"
@@ -303,3 +315,4 @@ resource "google_pubsub_subscription" "gtfs_to_bq" {
     google_project_iam_member.pubsub_bq
   ]
 }
+
