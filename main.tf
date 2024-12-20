@@ -237,6 +237,10 @@ resource "google_bigquery_table" "gtfs" {
   table_id   = var.table_id
   dataset_id = google_bigquery_dataset.gtfs.dataset_id
 
+  time_partitioning {
+    type = "DAY"
+  }
+
   schema = <<EOF
 [
    {
